@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model UserProfile {
+  id                 Int     @id @default(autoincrement())
+  weightKg           Float   @default(0)
+  heightCm           Float   @default(0)
+  dailyCalorieTarget Int?
+  dailyProteinTarget Int?
+  tsomMode           Boolean @default(false)
+}
+
+model FoodItem {
+  id            Int            @id @default(autoincrement())
+  name          String         @unique
+  servingUnit   String
+  calories      Float
+  proteinG      Float
+  carbsG        Float
+  fatG          Float
+  isFasting     Boolean        @default(false)
+  dailyFoodLogs DailyFoodLog[]
+}
+
+model DailyFoodLog {
+  id         Int      @id @default(autoincrement())
+  date       String
+  foodItemId Int
+  foodItem   FoodItem @relation(fields: [foodItemId], references: [id])
+  quantity   Float    @default(1)
+  mealSlot   String
+}
+
+model WorkoutLog {
+  id              Int    @id @default(autoincrement())
+  date            String
+  workoutType     String
+  activeCalories  Int
+  totalCalories   Int
+  durationMinutes Int
+  avgHeartRate    Int?
+  rawSummary      String
+}
