@@ -32,6 +32,17 @@
 - When active, all recommendations and the food library are filtered to `FoodItem.isFasting = true`.
 - UI must clearly indicate when Tsom Mode is active (e.g. a banner or icon).
 
+### Feature: Strength & Recovery
+- **Searchable Exercise Catalog**: Seeded from a free open-source database (e.g. ExerciseDB / open-source fitness dataset). Searchable by name, target muscle, and equipment.
+- **Deterministic Muscle Recovery**: Recovery percentages use a strict mathematical time-decay formula based on logged sets and elapsed hours. **Never use AI for recovery math.**
+- **Visual Muscle Map**: Interactive front/back body diagram color-coded by recovery percentage (green = ready, yellow = recovering, red = fatigued) using `react-body-highlighter`.
+- **Multi-Sport Fatigue Mapping**: Deterministically maps sports (soccer, tennis, swimming) duration to muscle fatigue points (e.g. soccer to quads/hamstrings/calves, tennis to shoulders/core/quads, swimming to lats/shoulders).
+- **AI Session Grader**: Evaluates completed sets against recovered muscle groups and recommends the next day's workout targeting fresh muscles.
+- Routes:
+  - `GET /api/exercises`
+  - `GET /api/recovery`
+  - `POST /api/recovery/grade`
+
 ## Development Workflow
 1. Work slice by slice as defined in `docs/02-mvp-slices.md`.
 2. After completing each slice, update `docs/PROGRESS.md` with the slice number, date, and what was done.
