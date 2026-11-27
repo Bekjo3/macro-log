@@ -1,8 +1,8 @@
 -- CreateTable
 CREATE TABLE "UserProfile" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "weightKg" REAL NOT NULL DEFAULT 60,
-    "heightCm" REAL NOT NULL DEFAULT 181,
+    "weightKg" REAL NOT NULL DEFAULT 0,
+    "heightCm" REAL NOT NULL DEFAULT 0,
     "dailyCalorieTarget" INTEGER,
     "dailyProteinTarget" INTEGER,
     "tsomMode" BOOLEAN NOT NULL DEFAULT false

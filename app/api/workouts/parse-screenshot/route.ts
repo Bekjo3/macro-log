@@ -35,6 +35,16 @@ const workoutSchema = {
       description:
         "Average heart rate in BPM (beats per minute) as an integer if shown, or null if not available.",
     },
+    totalVolumeKg: {
+      type: Type.INTEGER,
+      description:
+        "Total weight/volume lifted in kg if visible in a strength workout summary (e.g. Hevy, Strong, Apple Fitness), or null.",
+    },
+    muscleGroups: {
+      type: Type.STRING,
+      description:
+        "Primary muscle groups targeted if visible or deducible from exercises (e.g., 'Back, Biceps' or 'Chest, Triceps' or 'Quads, Hamstrings'), or empty string.",
+    },
     summary: {
       type: Type.STRING,
       description:
@@ -102,13 +112,14 @@ export async function POST(req: NextRequest) {
     const todayDate = new Date().toISOString().slice(0, 10);
 
     const promptText = `You are an expert fitness data extractor.
-Analyze the ${files.length} uploaded fitness app workout summary screenshot(s) (such as Apple Fitness, Garmin Connect, Strava, Samsung Health, Whoop, Fitbit, or similar).
-Note: The user may have uploaded multiple screenshots of the SAME workout (for example, scrolling down the screen to capture active calories at the top and heart rate or splits lower down).
+Analyze the ${files.length} uploaded fitness app workout summary screenshot(s) (such as Apple Fitness, Garmin Connect, Strava, Hevy, Strong, Fitbod, Samsung Health, Whoop, or similar).
+Note: The user may have uploaded multiple screenshots of the SAME workout (for example, scrolling down to capture calories/duration, or sets/exercises/volume).
 Synthesize all the details across all ${files.length} screenshot(s) into one single, cohesive workout record:
 - Identify the activity type (workoutType).
 - Extract active calories burned and total calories burned.
 - Extract the total workout duration in whole minutes.
 - Extract average heart rate in BPM if visible anywhere in the images.
+- If this is a resistance or strength training workout with exercises or volume shown (e.g., bench press, cable rows, lat pulldowns), extract total volume in kg if stated, and identify the primary muscle groups trained (e.g. "Back, Biceps" or "Chest, Shoulders, Triceps" or "Legs").
 - Extract the workout date in YYYY-MM-DD format if visible; if not displayed or unclear, use today's date: ${todayDate}.
 Ensure numerical values are integers. Ensure duration is total whole minutes.`;
 
@@ -159,6 +170,12 @@ Ensure numerical values are integers. Ensure duration is total whole minutes.`;
       ),
       avgHeartRate: parsedData.avgHeartRate
         ? Math.round(Number(parsedData.avgHeartRate))
+        : null,
+      totalVolumeKg: parsedData.totalVolumeKg
+        ? Math.round(Number(parsedData.totalVolumeKg))
+        : null,
+      muscleGroups: parsedData.muscleGroups
+        ? String(parsedData.muscleGroups).trim()
         : null,
       rawSummary: parsedData.summary || responseText,
     };

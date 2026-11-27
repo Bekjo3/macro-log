@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
       totalCalories,
       durationMinutes,
       avgHeartRate,
+      totalVolumeKg,
+      muscleGroups,
       rawSummary,
     } = body;
 
@@ -50,6 +52,8 @@ export async function POST(req: NextRequest) {
         ),
         durationMinutes: Math.max(1, Math.round(Number(durationMinutes) || 1)),
         avgHeartRate: avgHeartRate ? Math.round(Number(avgHeartRate)) : null,
+        totalVolumeKg: totalVolumeKg ? Math.round(Number(totalVolumeKg)) : null,
+        muscleGroups: muscleGroups ? String(muscleGroups).trim() : null,
         rawSummary: rawSummary || "Manually saved parsed workout",
       },
     });

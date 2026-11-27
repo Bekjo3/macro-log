@@ -9,6 +9,8 @@ interface ParsedWorkout {
   totalCalories: number;
   durationMinutes: number;
   avgHeartRate: number | null;
+  totalVolumeKg?: number | null;
+  muscleGroups?: string | null;
   rawSummary: string;
 }
 
@@ -20,6 +22,8 @@ interface WorkoutLogItem {
   totalCalories: number;
   durationMinutes: number;
   avgHeartRate: number | null;
+  totalVolumeKg?: number | null;
+  muscleGroups?: string | null;
   rawSummary: string;
 }
 
@@ -398,6 +402,12 @@ export default function WorkoutsPage() {
                 <p className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
                   {parsedResult.workoutType}
                 </p>
+                {parsedResult.muscleGroups && (
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
+                    Targeted: <span className="font-medium text-zinc-900 dark:text-white">{parsedResult.muscleGroups}</span>
+                    {parsedResult.totalVolumeKg ? ` • ${parsedResult.totalVolumeKg.toLocaleString()} kg volume` : ""}
+                  </p>
+                )}
               </div>
 
               {/* Metric grid */}
